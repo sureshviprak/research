@@ -3,6 +3,7 @@
 // @namespace   com.viprak.ejobs
 // @description Adding default text for biddinh
 // @include     https://www.elance.com/j/*
+// @include     https://www.elance.com/myelance
 // @version     1
 // @grant       GM_registerMenuCommand
 // ==/UserScript==
@@ -128,8 +129,25 @@ function addLocalTime(){
   }
 }
 
+function selectAwarded(){
+  var a = $x("//div[contains(@class,'dashboard') and contains(., 'Awarded')]/descendant::div[contains(@class,'checkbox')]");
+  var f = function() { 
+    a.pop().click(); 
+    if(a.length > 0) { 
+      window.setTimeout(f, 1000); 
+    } else {
+      console.log("Click on Move to folders");
+    }
+  };
+  if(a.length > 0) {
+    f();
+  }
+}
+
 GM_registerMenuCommand("Small", smallText, "S");
 GM_registerMenuCommand("Big", bigText, "B");
 GM_registerMenuCommand("Not enough", notEnoughInfo, "N");
 GM_registerMenuCommand("Add Local Time", addLocalTime, "A");
+GM_registerMenuCommand("selectAwarded", selectAwarded, "E");
+
 addLocalTime();
