@@ -32,13 +32,13 @@ Considering our expertise in these technologies, we are confident of giving you 
 Thanks,\n\
 Prakash \n";
   if(combined) {
-	addBothInfo("", str1 + str2);
+	  addBothInfo("", str1 + str2);
   } else {
     addBothInfo(str1, str2);
   }
 }
 
-function bigText(){
+function bigText(combined){
   var str1 = "Hello Sir,\n\
 \n\
 We have been working on C#/.Net platform from last 10+ years. We have completed  over 300 projects across various contracts and have worked on almost all technologies related to .Net platform which includes :\n\
@@ -88,7 +88,11 @@ We already have 4 of our developers working full time with similar service agree
 \n\
 Thanks,\n\
 Prakash \n";
-  addBothInfo(str1, str2);
+  if(combined) {
+    addBothInfo("", str1 + str2);
+  } else {
+    addBothInfo(str1, str2);
+  }
 }
 
 function notEnoughInfo(){
@@ -147,11 +151,13 @@ function selectAwarded(){
     f();
   }
 }
+function smallText1() { smallText(true); }
+function bigText1() { bigText(true); }
 
 GM_registerMenuCommand("Small", smallText, "S");
 GM_registerMenuCommand("Big", bigText, "B");
-GM_registerMenuCommand("Small 1", function() { smallText(true); }, "S");
-GM_registerMenuCommand("Big 1", function() { bigText(true); }, "B");
+GM_registerMenuCommand("Small 1", smallText1, "S");
+GM_registerMenuCommand("Big 1", bigText1, "B");
 GM_registerMenuCommand("Not enough", notEnoughInfo, "N");
 GM_registerMenuCommand("Add Local Time", addLocalTime, "A");
 GM_registerMenuCommand("selectAwarded", selectAwarded, "E");
