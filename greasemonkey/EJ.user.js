@@ -31,7 +31,7 @@ Considering our expertise in these technologies, we are confident of giving you 
 \n\
 Thanks,\n\
 Prakash \n";
-  if(combined) {
+  if(combined === true) {
 	  addBothInfo("", str1 + str2);
   } else {
     addBothInfo(str1, str2);
@@ -88,7 +88,7 @@ We already have 4 of our developers working full time with similar service agree
 \n\
 Thanks,\n\
 Prakash \n";
-  if(combined) {
+  if(combined === true) {
     addBothInfo("", str1 + str2);
   } else {
     addBothInfo(str1, str2);
@@ -110,7 +110,7 @@ Prakash\n\
     d.checked = true;
   }
   // addBothInfo(str1, str2);
-  if(combined) {
+  if(combined === true) {
     addBothInfo("", str1 + str2);
   } else {
     addBothInfo(str1, str2);
