@@ -153,7 +153,9 @@ function evaluateXPath(aNode, aExpr) {
   return found;
 }
 
-var $x = function(expr){ evaluateXPath(document, expr); };
+function $x(expr){ 
+  return evaluateXPath(document, expr); 
+};
 
 function selectAwarded(){
   var a = $x("//div[contains(@class,'dashboard') and contains(., 'Awarded')]/descendant::div[contains(@class,'checkbox')]");
@@ -165,7 +167,7 @@ function selectAwarded(){
       console.log("Click on Move to folders");
     }
   };
-  if(a.length > 0) {
+  if(a && a.length > 0) {
     f();
   }
 }
