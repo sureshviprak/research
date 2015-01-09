@@ -142,6 +142,19 @@ function addLocalTime(){
   }
 }
 
+function evaluateXPath(aNode, aExpr) {
+  var xpe = aNode.ownerDocument || aNode;
+  var nsResolver = xpe.createNSResolver(xpe.documentElement);
+  var result = xpe.evaluate(aExpr, aNode, nsResolver, 0, null);
+  var found = [];
+  var res;
+  while (res = result.iterateNext())
+    found.push(res);
+  return found;
+}
+
+var $x = function(expr){ evaluateXPath(document, expr); };
+
 function selectAwarded(){
   var a = $x("//div[contains(@class,'dashboard') and contains(., 'Awarded')]/descendant::div[contains(@class,'checkbox')]");
   var f = function() { 
