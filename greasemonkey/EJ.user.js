@@ -157,8 +157,8 @@ function $x(expr){
   return evaluateXPath(document, expr); 
 };
 
-function selectAwarded(){
-  var a = $x("//div[contains(@class,'dashboard') and contains(., 'Awarded')]/descendant::div[contains(@class,'checkbox')]");
+function selectWithStatus(status){
+  var a = $x("//div[contains(@class,'dashboard') and contains(., '"+status+"')]/descendant::div[contains(@class,'checkbox')]");
   var f = function() { 
     a.pop().click(); 
     if(a.length > 0) { 
@@ -171,9 +171,12 @@ function selectAwarded(){
     f();
   }
 }
+
 function smallText1() { smallText(true); }
 function bigText1() { bigText(true); }
 function notEnoughInfo1() { notEnoughInfo(true); }
+function selectAwarded() { selectWithStatus('Awarded'); }
+function selectCancelled() { selectWithStatus('cancelled'); }
 
 GM_registerMenuCommand("Small", smallText, "S");
 GM_registerMenuCommand("Big", bigText, "B");
@@ -183,5 +186,6 @@ GM_registerMenuCommand("Not enough", notEnoughInfo, "N");
 GM_registerMenuCommand("Not enough 1", notEnoughInfo1, "N");
 GM_registerMenuCommand("Add Local Time", addLocalTime, "A");
 GM_registerMenuCommand("selectAwarded", selectAwarded, "E");
+GM_registerMenuCommand("selectCancelled", selectCancelled, "C");
 
 //addLocalTime();
