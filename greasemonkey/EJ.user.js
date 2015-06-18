@@ -8,6 +8,26 @@
 // @grant       GM_registerMenuCommand
 // ==/UserScript==
 
+function addStyle(selector, rules, index){
+  var style, 
+      sheet;
+  function addCSSRule() {
+    if(!sheet) return;
+	if(sheet.insertRule) {
+		sheet.insertRule(selector + "{" + rules + "}", index);
+	}
+	else if(sheet.addRule) {
+		sheet.addRule(selector, rules, index);
+	}
+  }
+  
+  style = document.createElement("style");
+  style.appendChild(document.createTextNode(""));
+  document.head.appendChild(style);
+  sheet = style.sheet;
+  addCSSRule(selector, rules, index || -1);
+}
+
 function addText(tbExpr, str){
   var tb = document.querySelector(tbExpr);
   if(tb){
@@ -158,7 +178,7 @@ function $x(expr){
 };
 
 function selectWithStatus(status){
-  var a = $x("//div[contains(@class,'dashboard') and contains(., '"+status+"')]/descendant::div[contains(@class,'checkbox')]");
+  var a = $x("//div[contains(@class,'dashboard') and contains(./descendant::div[@class='left'][3], '"+status+"')]/descendant::div[contains(@class,'checkbox')]");
   var f = function() { 
     a.pop().click(); 
     if(a.length > 0) { 
@@ -172,11 +192,52 @@ function selectWithStatus(status){
   }
 }
 
+function isVisible(elem){
+  var w = 0,
+      h = 0;
+  if(!elem) return false;
+  w = elem.offsetWidth || 0;
+  h = elem.offsetHeight || 0;
+  return w > 0 && h > 0;
+}
+
+function showNote(id, msg){
+  var elem = document.querySelector("#"+id);
+  if(elem != null) return;
+  addStyle(".gm_notification", " background-color: rgba(255, 255, 80, 0.2); padding: 10px; position: fixed; left: 0px; top: 0px; display: inline-block; ");
+  elem = document.createElement("div");
+  elem.id = id;
+  elem.className = "gm_notification";
+  elem.innerHTML = msg;
+  document.body.appendChild(elem);
+}
+
+function hideNote(id){
+  var elem = document.querySelector("#"+id);
+  if(elem == null) return;
+  document.body.removeChild(elem);
+}
+
+function getAllMyElanceRecords(){
+  var elem = document.querySelector("#myjobs-loadmore"),
+      elemLoader = document.querySelector("#loadmore-loading");
+  if(elem != null && isVisible(elem) && elemLoader != null){
+    if(!isVisible(elemLoader)){
+      showNote("MyJobs", "Loading.. please wait");
+      elem.click();
+    }
+    window.setTimeout(getAllMyElanceRecords, 2000);
+  } else {
+    hideNote("MyJobs");
+  }
+}
+
 function smallText1() { smallText(true); }
 function bigText1() { bigText(true); }
 function notEnoughInfo1() { notEnoughInfo(true); }
 function selectAwarded() { selectWithStatus('Awarded'); }
 function selectCancelled() { selectWithStatus('cancelled'); }
+function selectCompleted() { selectWithStatus('Complete'); }
 
 GM_registerMenuCommand("Small", smallText, "S");
 GM_registerMenuCommand("Big", bigText, "B");
@@ -187,5 +248,7 @@ GM_registerMenuCommand("Not enough 1", notEnoughInfo1, "N");
 GM_registerMenuCommand("Add Local Time", addLocalTime, "A");
 GM_registerMenuCommand("selectAwarded", selectAwarded, "E");
 GM_registerMenuCommand("selectCancelled", selectCancelled, "C");
+GM_registerMenuCommand("selectCompleted", selectCompleted, "C");
+GM_registerMenuCommand("Get all my jobs", getAllMyElanceRecords);
 
 //addLocalTime();
